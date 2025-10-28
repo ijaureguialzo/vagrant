@@ -1,0 +1,32 @@
+VM_MEMORIA = 2048
+VM_CPUS = 2
+VM_GUI = false
+VM_HOSTNAME = "ubuntu"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/ubuntu-22.04"
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = VM_MEMORIA
+    v.cpus = VM_CPUS
+    v.gui = VM_GUI
+  end
+
+  config.vm.provider "vmware_desktop" do |v|
+    v.vmx["memsize"] = VM_MEMORIA
+    v.vmx["numvcpus"] = VM_CPUS
+    v.gui = VM_GUI
+  end
+
+  config.vm.network "public_network"
+
+  config.vm.define "server" do |server|
+    server.vm.hostname = VM_HOSTNAME
+    server.vm.provision "ansible" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+    end
+  end
+end
