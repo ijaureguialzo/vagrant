@@ -1,7 +1,6 @@
 VM_MEMORIA = 2048
 VM_CPUS = 2
 VM_GUI = false
-VM_HOSTNAME = "ubuntu"
 
 Vagrant.configure("2") do |config|
 
@@ -22,7 +21,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "public_network"
 
   config.vm.define "server" do |server|
-    server.vm.hostname = VM_HOSTNAME
+    server.vm.hostname = "ubuntu"
     server.vm.provision "ansible" do |ansible|
       ansible.playbook = "playbook.yml"
       ansible.compatibility_mode = "2.0"
